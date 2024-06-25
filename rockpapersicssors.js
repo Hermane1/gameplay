@@ -6,96 +6,81 @@ function getHand() {
 
 const player1 = {
     name: 'Player 1',
-    getHand: getHand
+    getHand: getHand,
+    score: 0
 };
 
 const player2 = {
     name: 'Player 2',
-    getHand: getHand
+    getHand: getHand,
+    score: 0
 };
 
-const player3 = {
-    name: 'Player 3',
-    getHand: getHand
-};
-
-const player4 = {
-    name: 'Player 4',
-    getHand: getHand
-};
-
-function playRound(player1, player2) {
-    const hand1 = player1.getHand();
+function playRound(player1, player2, player1Hand) {
+    const hand1 = player1Hand;
     const hand2 = player2.getHand();
-    
-    console.log(`${player1.name} played ${hand1}`);
-    console.log(`${player2.name} played ${hand2}`);
+
+    document.getElementById('player1-choice').textContent = `${player1.name} chose ${hand1}`;
+    document.getElementById('player2-choice').textContent = `${player2.name} chose ${hand2}`;
 
     if (hand1 === hand2) {
-        console.log("It's a tie!");
-        return null;
+        return "It's a tie!";
     }
 
-    let winner = null;
     if ((hand1 === 'rock' && hand2 === 'scissors') ||
         (hand1 === 'scissors' && hand2 === 'paper') ||
         (hand1 === 'paper' && hand2 === 'rock')) {
-        winner = player1;
+        player1.score++;
+        return `${player1.name} wins the round!`;
     } else {
-        winner = player2;
+        player2.score++;
+        return `${player2.name} wins the round!`;
     }
-
-    console.log(`${winner.name} wins!`);
-    return winner;
 }
 
-function playGame(player1, player2, playUntil) {
-    let player1Wins = 0;
-    let player2Wins = 0;
+document.getElementById('start-game').addEventListener('click', () => {
+    player1.name = document.getElementById('player1-name').value || 'Player 1';
+    player2.name = document.getElementById('player2-name').value || 'Player 2';
 
-    while (player1Wins < playUntil && player2Wins < playUntil) {
-        const winner = playRound(player1, player2);
+    document.getElementById('player1-display').textContent = player1.name;
+    document.getElementById('player2-display').textContent = player2.name;
+    document.getElementById('player1-score').textContent = '0';
+    document.getElementById('player2-score').textContent = '0';
 
-        if (winner === player1) {
-            player1Wins++;
-        } else if (winner === player2) {
-            player2Wins++;
+    player1.score = 0;
+    player2.score = 0;
+
+    document.querySelector('.game-area').style.display = 'block';
+});
+
+document.querySelectorAll('.choice').forEach(button => {
+    button.addEventListener('click', () => {
+        const player1Hand = button.getAttribute('data-hand');
+        const roundResult = playRound(player1, player2, player1Hand);
+
+        document.getElementById('round-result').textContent = roundResult;
+        document.getElementById('player1-score').textContent = player1.score;
+        document.getElementById('player2-score').textContent = player2.score;
+
+        if (player1.score >= 3 || player2.score >= 3) {
+            const gameResult = player1.score >= 3 ? `${player1.name} wins the game!` : `${player2.name} wins the game!`;
+            document.getElementById('game-result').textContent = gameResult;
+
+            document.getElementById('play-again').style.display = 'block';
         }
+    });
+});
 
-        console.log(`${player1.name} has ${player1Wins} wins`);
-        console.log(`${player2.name} has ${player2Wins} wins`);
-    }
-
-    const finalWinner = player1Wins === playUntil ? player1 : player2;
-    console.log(`${finalWinner.name} wins the game!`);
-    return finalWinner;
-}
-
-function playTournament(player1, player2, player3, player4, playUntil) {
-    console.log("Round 1:");
-    const winner1 = playGame(player1, player2, playUntil);
-
-    console.log("Round 2:");
-    const winner2 = playGame(player3, player4, playUntil);
-
-    console.log("Final Round:");
-    const champion = playGame(winner1, winner2, playUntil);
-
-    console.log(`${champion.name} is the world champion!`);
-}
-
-
-playGame(player1, player2, 3);
-
-
-playTournament(player1, player2, player3, player4, 3);
-
-module.exports = {
-    playRound,
-    playGame,
-    playTournament,
-    player1,
-    player2,
-    player3,
-    player4
-};
+document.getElementById('play-again').addEventListener('click', () => {
+    document.getElementById('round-result').textContent = '';
+    document.getElementById('game-result').textContent = '';
+    document.getElementById('play-again').style.display = 'none';
+    document.getElementById('player1-choice').textContent = '';
+    document.getElementById('player2-choice').textContent = '';
+    
+    player1.score = 0;
+    player2.score = 0;
+    
+    document.getElementById('player1-score').textContent = '0';
+    document.getElementById('player2-score').textContent = '0';
+});
