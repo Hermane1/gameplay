@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Rock, Paper, Scissors</h1> 
+        <div class="player-info">
+            <input type="text" id="player1-name" placeholder="Player 1 Name"/>
+            <input type="text" id="player2-name" placeholder="Player 2 Name"/>
+            <button id="start-game">Start Game</button>
+        </div>
+        <div class="game-area" style="display:none;">
+            <div class="choices">
+                <h2>Choose your hand:</h2>
+                <button class="choice" data-hand="rock">Rock</button>
+                <button class="choice" data-hand="paper">Paper</button>
+                <button class="choice" data-hand="scissors">Scissors</button>
+            </div>
+            <div class="scoreboard">
+                <div class="player1-score">
+                    <h3 id="player1-display">Player 1</h3>
+                    <p id="player1-score">0</p>
+                </div>
+                <div class="player2-score">
+                    <h3 id="player2-display">Player 2</h3>
+                    <p id="player2-score">0</p>
+                </div>
+            </div>
+            <div class="result">
+                <p id="player1-choice">Player 1 choice will be displayed here.</p>
+                <p id="player2-choice">Player 2 choice will be displayed here.</p>
+                <p id="round-result">Round result will be displayed here.</p>
+                <p id="game-result">Game result will be displayed here.</p>
+                <button id="play-again" style="display:none;">Play Again</button>
+            </div>
+        </div>
+    </div>
+    <script src="rockpaperscissors.js"></script>
+</body>
+</html>
